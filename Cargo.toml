@@ -1,0 +1,14 @@
+[package]
+name = "radix_fmt"
+version = "0.1.0"
+authors = ["Félix <felix-dev@daudre-vignier.fr>"]
+license = "Apache-2.0"
+documentation = "https://docs.rs/radix_fmt/"
+repository = "https://gitlab.com/Boiethios/radix_fmt_rs"
+
+description = "Format a number in an arbitrary radix"
+keywords = ["format", "radix", "base", "number", "integer"]
+categories = ["value-formatting"]
+readme = "README.md"
+
+[dependencies]
