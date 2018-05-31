@@ -1,5 +1,5 @@
-This crate adds a tool to format a number in an arbitrary base
-in the range `[2, 36]`, since this feature was removed from the
+This crate adds a tool to format a number in a base
+in range `[2, 36]`, since this feature was removed from the
 standard library.
 
 Add the crate, import [`radix`](fn.radix.html) in scope,
@@ -48,12 +48,14 @@ println!("{:#}", radix(n, 36));
     why the maximum base is 36: it uses all the digits and all
     the letters of the alphabet.
 
-* Why are they missing functions that format in a specific base?
+* Why are there missing functions among the functions that format in a specific base?
+For example there are `radix_7` and `radix_9`, but not `radix_8`.
+* Among the functions that format in a specific base, why are some missing?
 For example there are `radix_7` and `radix_9`, but not `radix_8`.
 
-    > All the numbers in range `[2, 36]` are represented but `2`,
-    `8`, `10` and `16` because they already exist in the standard
-    library through binary, octal, decimal (regular) and
+    > All the numbers in range `[2, 36]` are represented except
+    `2`, `8`, `10` and `16` because they already exist in the
+    standard library through binary, octal, decimal (regular) and
     hexadecimal formatting.
 
 * What if I want to use the capitalized letters as digits?
