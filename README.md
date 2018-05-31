@@ -48,8 +48,6 @@ println!("{:#}", radix(n, 36));
     why the maximum base is 36: it uses all the digits and all
     the letters of the alphabet.
 
-* Why are there missing functions among the functions that format in a specific base?
-For example there are `radix_7` and `radix_9`, but not `radix_8`.
 * Among the functions that format in a specific base, why are some missing?
 For example there are `radix_7` and `radix_9`, but not `radix_8`.
 
