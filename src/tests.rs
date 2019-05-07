@@ -37,7 +37,7 @@ use fluid::prelude::*;
 #[case(34, "2w")]
 #[case(35, "2u")]
 #[case(36, "2s")]
-fn base_formatting(base: u32, hundred_formatted: &str) {
+fn base_formatting(base: u8, hundred_formatted: &str) {
     let zero = Radix::new(0, base);
     let hundred = Radix::new(100, base);
 
@@ -79,7 +79,7 @@ fn base_formatting(base: u32, hundred_formatted: &str) {
 #[case(radix_34, 34)]
 #[case(radix_35, 35)]
 #[case(radix_36, 36)]
-fn verify_shortcut(f: fn(u32) -> Radix<u32>, base: u32) {
+fn verify_shortcut(f: fn(u32) -> Radix<u32>, base: u8) {
     const N: u32 = 1234;
     let radix = Radix::new(N, base);
 
@@ -93,4 +93,106 @@ fn alternate_capitalize() {
     let r = Radix::new(100, 28);
 
     format!("{:#}", r).should().be_equal_to("3G");
+}
+
+#[fact]
+fn max_size_is_ok() {
+    let base_3 =
+        "202201102121002021012000211012011021221022212021111001022110211020010021100121010";
+
+    format!("{}", radix_3(u128::max_value()))
+        .should()
+        .be_equal_to(base_3);
+}
+
+mod types {
+    use crate::*;
+    use fluid::prelude::*;
+
+    const U: &str = "10201";
+
+    #[fact]
+    fn u8_is_ok() {
+        let n: u8 = 100;
+
+        format!("{}", radix_3(n)).should().be_equal_to(U);
+    }
+
+    #[fact]
+    fn i8_is_ok() {
+        let n: i8 = -100;
+        let u = n as u8;
+
+        format!("{}", radix_3(n))
+            .should()
+            .be_equal_to(format!("{}", radix_3(u)));
+    }
+
+    #[fact]
+    fn u16_is_ok() {
+        let n: u16 = 100;
+
+        format!("{}", radix_3(n)).should().be_equal_to(U);
+    }
+
+    #[fact]
+    fn i16_is_ok() {
+        let n: i16 = -100;
+        let u = n as u16;
+
+        format!("{}", radix_3(n))
+            .should()
+            .be_equal_to(format!("{}", radix_3(u)));
+    }
+
+    #[fact]
+    fn u32_is_ok() {
+        let n: u32 = 100;
+
+        format!("{}", radix_3(n)).should().be_equal_to(U);
+    }
+
+    #[fact]
+    fn i32_is_ok() {
+        let n: i32 = -100;
+        let u = n as u32;
+
+        format!("{}", radix_3(n))
+            .should()
+            .be_equal_to(format!("{}", radix_3(u)));
+    }
+
+    #[fact]
+    fn u64_is_ok() {
+        let n: u64 = 100;
+
+        format!("{}", radix_3(n)).should().be_equal_to(U);
+    }
+
+    #[fact]
+    fn i64_is_ok() {
+        let n: i64 = -100;
+        let u = n as u64;
+
+        format!("{}", radix_3(n))
+            .should()
+            .be_equal_to(format!("{}", radix_3(u)));
+    }
+
+    #[fact]
+    fn usize_is_ok() {
+        let n: usize = 100;
+
+        format!("{}", radix_3(n)).should().be_equal_to(U);
+    }
+
+    #[fact]
+    fn isize_is_ok() {
+        let n: isize = -100;
+        let u = n as usize;
+
+        format!("{}", radix_3(n))
+            .should()
+            .be_equal_to(format!("{}", radix_3(u)));
+    }
 }
