@@ -105,6 +105,25 @@ fn max_size_is_ok() {
         .be_equal_to(base_3);
 }
 
+#[fact]
+fn binary_fallback_is_ok() {
+    let base_2: String = std::iter::repeat('1').take(128).collect();
+
+    format!("{}", radix(-1_i128, 2))
+        .should()
+        .be_equal_to(base_2);
+}
+
+#[fact]
+fn same_number_as_base() {
+    format!("{}", radix(9, 9)).should().be_equal_to("10");
+}
+
+#[fact]
+fn whatever_number() {
+    format!("{}", radix(5, 9)).should().be_equal_to("5");
+}
+
 mod types {
     use crate::*;
     use fluid::prelude::*;

@@ -15,7 +15,7 @@
 //! Get started
 //! -----------
 //!
-//! Add the crate in the cargo manifest:
+//! Add the crate to the cargo manifest:
 //!
 //! ```toml
 //! radix_fmt = "1"
@@ -63,6 +63,7 @@ use core::num::{NonZeroI64, NonZeroU64};
 use core::num::{NonZeroI8, NonZeroU8};
 use core::num::{NonZeroIsize, NonZeroUsize};
 use std::fmt::{Display, Formatter, Result};
+use std::iter::successors;
 
 /// A struct to format a number in an arbitrary radix.
 ///
@@ -97,39 +98,36 @@ where
     }
 }
 
+#[inline(always)]
 fn digit(u: u8, alternate: bool) -> u8 {
+    let a = if alternate { b'A' } else { b'a' };
+
     match u {
         0...9 => u + b'0',
-        10...35 => {
-            if alternate {
-                u + b'A' - 10
-            } else {
-                u + b'a' - 10
-            }
-        }
+        10...35 => u - 10 + a,
         _ => unreachable!("Digit is not in range [0..36]"),
     }
 }
+
+const BUF_SIZE: usize = 81; // u128::max_value() in base 3 takes 81 digits to write.
 
 macro_rules! impl_display_for {
     ($i: ty => $via: ty as $u: ty) => {
         impl Display for Radix<$i> {
             fn fmt(&self, f: &mut Formatter) -> Result {
-                fn do_format(mut n: $u, base: u8, f: &mut Formatter) -> Result {
-                    // u128::max_value() in base 3 takes 81 digits to write.
-                    const BUF_SIZE: usize = 81;
+                fn do_format(n: $u, base: $u, f: &mut Formatter) -> Result {
                     let mut buffer = [0_u8; BUF_SIZE];
-                    let mut index = BUF_SIZE - 1;
-                    let b = <$u>::from(base);
-
-                    for c in buffer.iter_mut().rev() {
-                        *c = digit((n % b) as u8, f.alternate());
-                        n /= b;
-                        if n == 0 {
-                            break;
-                        }
-                        index -= 1;
-                    }
+                    let divided = successors(Some(n), |n| match n / base {
+                        0 => None,
+                        n => Some(n),
+                    });
+                    let written = buffer
+                        .iter_mut()
+                        .rev()
+                        .zip(divided)
+                        .map(|(c, n)| *c = digit((n % base) as u8, f.alternate()))
+                        .count();
+                    let index = BUF_SIZE - written;
 
                     // There are only ASCII chars inside the buffer, so the string
                     // is guaranteed to be a valid UTF-8 string.
@@ -139,15 +137,12 @@ macro_rules! impl_display_for {
                 }
 
                 match (self.base, f.alternate()) {
-                    (2, false) => write!(f, "{:b}", self.n),
-                    (2, true) => write!(f, "{:#b}", self.n),
-                    (8, false) => write!(f, "{:o}", self.n),
-                    (8, true) => write!(f, "{:#o}", self.n),
-                    (10, false) => write!(f, "{}", self.n),
-                    (10, true) => write!(f, "{:#}", self.n),
-                    (16, false) => write!(f, "{:X}", self.n),
-                    (16, true) => write!(f, "{:#X}", self.n),
-                    (base, _) => do_format(<$via>::from(self.n) as $u, base, f),
+                    (2, _) => write!(f, "{:b}", self.n),
+                    (8, _) => write!(f, "{:o}", self.n),
+                    (10, _) => write!(f, "{}", self.n),
+                    (16, false) => write!(f, "{:x}", self.n),
+                    (16, true) => write!(f, "{:X}", self.n),
+                    (base, _) => do_format(<$via>::from(self.n) as $u, base.into(), f),
                 }
             }
         }
