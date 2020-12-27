@@ -36,9 +36,9 @@ use radix_fmt::*;
 
 let n = 35;
 
-// Ouput: "z"
+// Output: "z"
 println!("{}", radix(n, 36));
-// Same ouput: "z"
+// Same output: "z"
 println!("{}", radix_36(n));
 ```
 
@@ -49,7 +49,7 @@ use radix_fmt::radix;
 
 let n = 35;
 
-// Ouput: "Z"
+// Output: "Z"
 println!("{:#}", radix(n, 36));
 ```
 
