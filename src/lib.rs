@@ -136,13 +136,9 @@ macro_rules! impl_display_for {
                     f.write_str(s)
                 }
 
-                match (self.base, f.alternate()) {
-                    (2, _) => write!(f, "{:b}", self.n),
-                    (8, _) => write!(f, "{:o}", self.n),
-                    (10, _) => write!(f, "{}", self.n),
-                    (16, false) => write!(f, "{:x}", self.n),
-                    (16, true) => write!(f, "{:X}", self.n),
-                    (base, _) => {
+                match self.base {
+                    10 => write!(f, "{}", self.n),
+                    base => {
                         let mut n = <$via>::from(self.n);
                         if n < 0 {
                             f.write_str("-")?;
