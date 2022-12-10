@@ -92,7 +92,7 @@ where
     /// Create a new displayable number from number and base.
     /// The base must be in the range [2, 36].
     pub fn new(n: T, base: u8) -> Self {
-        assert!(base >= 2 && base <= 36);
+        assert!((2..=36).contains(&base));
 
         Radix { n, base }
     }
