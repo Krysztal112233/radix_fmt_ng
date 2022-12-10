@@ -103,8 +103,8 @@ fn digit(u: u8, alternate: bool) -> u8 {
     let a = if alternate { b'A' } else { b'a' };
 
     match u {
-        0...9 => u + b'0',
-        10...35 => u - 10 + a,
+        0..=9 => u + b'0',
+        10..=35 => u - 10 + a,
         _ => unreachable!("Digit is not in range [0..36]"),
     }
 }
