@@ -37,26 +37,25 @@ where
     Radix<T>: Display,
 {
     /// Create a new displayable number from number and base.
-    /// The base must be in the range [2, 36].
+    /// The base must be in the range [2, 62].
     pub fn new(n: T, base: u8) -> Self {
-        assert!((2..=36).contains(&base));
+        assert!((2..=62).contains(&base));
 
         Radix { n, base }
     }
 }
 
 #[inline(always)]
-fn digit(u: u8, alternate: bool) -> u8 {
-    let a = if alternate { b'A' } else { b'a' };
-
+fn digit(u: u8) -> u8 {
     match u {
         0..=9 => u + b'0',
-        10..=35 => u - 10 + a,
-        _ => unreachable!("Digit is not in range [0..36]"),
+        10..=35 => u - 10 + b'a',
+        36..=61 => u - 36 + b'A',
+        _ => unreachable!("Digit is not in range [0..61]"),
     }
 }
 
-const BUF_SIZE: usize = 81; // u128::max_value() in base 3 takes 81 digits to write.
+const BUF_SIZE: usize = 128;
 
 macro_rules! impl_display_for {
     ($i: ty => $via: ty as $u: ty) => {
@@ -72,7 +71,7 @@ macro_rules! impl_display_for {
                         .iter_mut()
                         .rev()
                         .zip(divided)
-                        .map(|(c, n)| *c = digit((n % base) as u8, f.alternate()))
+                        .map(|(c, n)| *c = digit((n % base) as u8))
                         .count();
                     let index = BUF_SIZE - written;
 
@@ -132,8 +131,7 @@ impl_display_for!(NonZeroU128 => u128 as u128);
 impl_display_for!(NonZeroIsize => isize as usize);
 impl_display_for!(NonZeroUsize => usize as usize);
 
-/// A helper for creating a new formatter from
-/// [`Radix::new`](struct.Radix.html#method.new).
+/// A helper for creating a new formatter from [`Radix::new`].
 ///
 /// # Example:
 ///
@@ -150,220 +148,15 @@ where
 {
     Radix::new(n, base)
 }
-/// Formats a number in base 3.
-pub fn radix_3<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 3)
-}
-/// Formats a number in base 4.
-pub fn radix_4<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 4)
-}
-/// Formats a number in base 5.
-pub fn radix_5<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 5)
-}
-/// Formats a number in base 6.
-pub fn radix_6<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 6)
-}
-/// Formats a number in base 7.
-pub fn radix_7<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 7)
-}
-/// Formats a number in base 9.
-pub fn radix_9<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 9)
-}
-/// Formats a number in base 11.
-pub fn radix_11<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 11)
-}
-/// Formats a number in base 12.
-pub fn radix_12<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 12)
-}
-/// Formats a number in base 13.
-pub fn radix_13<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 13)
-}
-/// Formats a number in base 14.
-pub fn radix_14<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 14)
-}
-/// Formats a number in base 15.
-pub fn radix_15<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 15)
-}
-/// Formats a number in base 17.
-pub fn radix_17<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 17)
-}
-/// Formats a number in base 18.
-pub fn radix_18<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 18)
-}
-/// Formats a number in base 19.
-pub fn radix_19<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 19)
-}
-/// Formats a number in base 20.
-pub fn radix_20<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 20)
-}
-/// Formats a number in base 21.
-pub fn radix_21<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 21)
-}
-/// Formats a number in base 22.
-pub fn radix_22<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 22)
-}
-/// Formats a number in base 23.
-pub fn radix_23<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 23)
-}
-/// Formats a number in base 24.
-pub fn radix_24<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 24)
-}
-/// Formats a number in base 25.
-pub fn radix_25<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 25)
-}
-/// Formats a number in base 26.
-pub fn radix_26<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 26)
-}
-/// Formats a number in base 27.
-pub fn radix_27<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 27)
-}
-/// Formats a number in base 28.
-pub fn radix_28<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 28)
-}
-/// Formats a number in base 29.
-pub fn radix_29<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 29)
-}
-/// Formats a number in base 30.
-pub fn radix_30<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 30)
-}
-/// Formats a number in base 31.
-pub fn radix_31<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 31)
-}
-/// Formats a number in base 32.
-pub fn radix_32<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 32)
-}
-/// Formats a number in base 33.
-pub fn radix_33<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 33)
-}
-/// Formats a number in base 34.
-pub fn radix_34<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 34)
-}
-/// Formats a number in base 35.
-pub fn radix_35<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 35)
-}
-/// Formats a number in base 36.
-pub fn radix_36<T>(n: T) -> Radix<T>
-where
-    Radix<T>: Display,
-{
-    Radix::new(n, 36)
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_radix() {
+        for ele in 2..=61 {
+            println!("{ele}: {}", radix(100, ele))
+        }
+    }
 }

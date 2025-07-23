@@ -1,13 +1,11 @@
-[![Latest Version](https://img.shields.io/crates/v/radix_fmt.svg)](https://crates.io/crates/radix_fmt)
-[![Documentation](https://img.shields.io/badge/api-rustdoc-purple.svg)](https://docs.rs/radix_fmt)
+[![Latest Version](https://img.shields.io/crates/v/radix_fmt_ng.svg)](https://crates.io/crates/radix_fmt_ng)
+[![Documentation](https://img.shields.io/badge/api-rustdoc-purple.svg)](https://docs.rs/radix_fmt_ng)
 
-This crate adds a tool to format a number in an arbitrary base from 2 to 36.
+This crate adds a tool to format a number in an arbitrary base from 2 to 61.
 
 This is a light crate, without any dependency.
 
 For primitive signed integers (`i8` to `i128`, and `isize`), negative values are formatted as the two’s complement representation.
-
-There is also one specific function for each radix that does not already exists in the standard library, _e.g._ [`radix_3`](fn.radix_3.html) to format a number in base 3.
 
 ## Get started
 
@@ -32,19 +30,6 @@ let n = 35;
 
 // Ouput: "z"
 println!("{}", radix(n, 36));
-// Same ouput: "z"
-println!("{}", radix_36(n));
-```
-
-You can use the _alternate_ modifier to capitalize the letter-digits:
-
-```rust
-use radix_fmt_ng::radix;
-
-let n = 35;
-
-// Ouput: "Z"
-println!("{:#}", radix(n, 36));
 ```
 
 ## FAQ
@@ -59,7 +44,7 @@ println!("{:#}", radix(n, 36));
 
 - What if I want to use the capitalized letters as digits?
 
-> Use the _alternate_ modifier `{:#}`.
+> No. If you did that the conversion from 36 to 61 would be meaningless.
 
 - Why does the formatting of negative numbers give a weird result?
 

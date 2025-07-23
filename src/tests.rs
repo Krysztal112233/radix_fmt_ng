@@ -37,6 +37,31 @@ use fluid::prelude::*;
 #[case(34, "2w")]
 #[case(35, "2u")]
 #[case(36, "2s")]
+#[case(37, "2q")]
+#[case(38, "2o")]
+#[case(39, "2m")]
+#[case(40, "2k")]
+#[case(41, "2i")]
+#[case(42, "2g")]
+#[case(43, "2e")]
+#[case(44, "2c")]
+#[case(45, "2a")]
+#[case(46, "28")]
+#[case(47, "26")]
+#[case(48, "24")]
+#[case(49, "22")]
+#[case(50, "20")]
+#[case(51, "1N")]
+#[case(52, "1M")]
+#[case(53, "1L")]
+#[case(54, "1K")]
+#[case(55, "1J")]
+#[case(56, "1I")]
+#[case(57, "1H")]
+#[case(58, "1G")]
+#[case(59, "1F")]
+#[case(60, "1E")]
+#[case(61, "1D")]
 fn base_formatting(base: u8, hundred_formatted: &str) {
     let zero = Radix::new(0, base);
     let hundred = Radix::new(100, base);
@@ -47,60 +72,12 @@ fn base_formatting(base: u8, hundred_formatted: &str) {
         .be_equal_to(hundred_formatted);
 }
 
-#[theory]
-#[case(radix_3, 3)]
-#[case(radix_4, 4)]
-#[case(radix_5, 5)]
-#[case(radix_6, 6)]
-#[case(radix_7, 7)]
-#[case(radix_9, 9)]
-#[case(radix_11, 11)]
-#[case(radix_12, 12)]
-#[case(radix_13, 13)]
-#[case(radix_14, 14)]
-#[case(radix_15, 15)]
-#[case(radix_17, 17)]
-#[case(radix_18, 18)]
-#[case(radix_19, 19)]
-#[case(radix_20, 20)]
-#[case(radix_21, 21)]
-#[case(radix_22, 22)]
-#[case(radix_23, 23)]
-#[case(radix_24, 24)]
-#[case(radix_25, 25)]
-#[case(radix_26, 26)]
-#[case(radix_27, 27)]
-#[case(radix_28, 28)]
-#[case(radix_29, 29)]
-#[case(radix_30, 30)]
-#[case(radix_31, 31)]
-#[case(radix_32, 32)]
-#[case(radix_33, 33)]
-#[case(radix_34, 34)]
-#[case(radix_35, 35)]
-#[case(radix_36, 36)]
-fn verify_shortcut(f: fn(u32) -> Radix<u32>, base: u8) {
-    const N: u32 = 1234;
-    let radix = Radix::new(N, base);
-
-    format!("{}", radix)
-        .should()
-        .be_equal_to(format!("{}", f(N)));
-}
-
-#[fact]
-fn alternate_capitalize() {
-    let r = Radix::new(100, 28);
-
-    format!("{:#}", r).should().be_equal_to("3G");
-}
-
 #[fact]
 fn max_size_is_ok() {
     let base_3 =
         "202201102121002021012000211012011021221022212021111001022110211020010021100121010";
 
-    format!("{}", radix_3(u128::MAX))
+    format!("{}", radix(u128::MAX, 3))
         .should()
         .be_equal_to(base_3);
 }
@@ -134,7 +111,7 @@ mod types {
     fn u8_is_ok() {
         let n: u8 = 100;
 
-        format!("{}", radix_3(n)).should().be_equal_to(U);
+        format!("{}", radix(n, 3)).should().be_equal_to(U);
     }
 
     #[fact]
@@ -142,16 +119,16 @@ mod types {
         let n: i8 = -100;
         let u = n as u8;
 
-        format!("{}", radix_3(n))
+        format!("{}", radix(n, 3))
             .should()
-            .be_equal_to(format!("{}", radix_3(u)));
+            .be_equal_to(format!("{}", radix(u, 3)));
     }
 
     #[fact]
     fn u16_is_ok() {
         let n: u16 = 100;
 
-        format!("{}", radix_3(n)).should().be_equal_to(U);
+        format!("{}", radix(n, 3)).should().be_equal_to(U);
     }
 
     #[fact]
@@ -159,16 +136,16 @@ mod types {
         let n: i16 = -100;
         let u = n as u16;
 
-        format!("{}", radix_3(n))
+        format!("{}", radix(n, 3))
             .should()
-            .be_equal_to(format!("{}", radix_3(u)));
+            .be_equal_to(format!("{}", radix(u, 3)));
     }
 
     #[fact]
     fn u32_is_ok() {
         let n: u32 = 100;
 
-        format!("{}", radix_3(n)).should().be_equal_to(U);
+        format!("{}", radix(n, 3)).should().be_equal_to(U);
     }
 
     #[fact]
@@ -176,16 +153,16 @@ mod types {
         let n: i32 = -100;
         let u = n as u32;
 
-        format!("{}", radix_3(n))
+        format!("{}", radix(n, 3))
             .should()
-            .be_equal_to(format!("{}", radix_3(u)));
+            .be_equal_to(format!("{}", radix(u, 3)));
     }
 
     #[fact]
     fn u64_is_ok() {
         let n: u64 = 100;
 
-        format!("{}", radix_3(n)).should().be_equal_to(U);
+        format!("{}", radix(n, 3)).should().be_equal_to(U);
     }
 
     #[fact]
@@ -193,16 +170,16 @@ mod types {
         let n: i64 = -100;
         let u = n as u64;
 
-        format!("{}", radix_3(n))
+        format!("{}", radix(n, 3))
             .should()
-            .be_equal_to(format!("{}", radix_3(u)));
+            .be_equal_to(format!("{}", radix(u, 3)));
     }
 
     #[fact]
     fn usize_is_ok() {
         let n: usize = 100;
 
-        format!("{}", radix_3(n)).should().be_equal_to(U);
+        format!("{}", radix(n, 3)).should().be_equal_to(U);
     }
 
     #[fact]
@@ -210,8 +187,8 @@ mod types {
         let n: isize = -100;
         let u = n as usize;
 
-        format!("{}", radix_3(n))
+        format!("{}", radix(n, 3))
             .should()
-            .be_equal_to(format!("{}", radix_3(u)));
+            .be_equal_to(format!("{}", radix(u, 3)));
     }
 }
