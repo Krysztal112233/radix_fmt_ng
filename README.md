@@ -34,14 +34,6 @@ println!("{}", radix(n, 36));
 
 ## FAQ
 
-- Which digits are used when the base is superior to `10`?
-
-> This crate uses the letters in alphabetic order. That is why the maximum base is 36: it uses all the digits and all the letters of the alphabet.
-
-- Among the functions that format in a specific base, why are some missing? For example there are `radix_7` and `radix_9`, but not `radix_8`.
-
-> All the numbers in range `[2, 36]` are represented except `2`, `8`, `10` and `16` because they already exist in the standard library through binary, octal, decimal (regular) and hexadecimal formatting.
-
 - What if I want to use the capitalized letters as digits?
 
 > No. If you did that the conversion from 36 to 61 would be meaningless.
