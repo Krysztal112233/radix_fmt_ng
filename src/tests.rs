@@ -100,14 +100,14 @@ fn max_size_is_ok() {
     let base_3 =
         "202201102121002021012000211012011021221022212021111001022110211020010021100121010";
 
-    format!("{}", radix_3(u128::max_value()))
+    format!("{}", radix_3(u128::MAX))
         .should()
         .be_equal_to(base_3);
 }
 
 #[fact]
 fn binary_fallback_is_ok() {
-    let base_2: String = std::iter::repeat('1').take(128).collect();
+    let base_2: String = std::iter::repeat_n('1', 128).collect();
 
     format!("{}", radix(-1_i128, 2))
         .should()

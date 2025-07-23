@@ -1,11 +1,14 @@
 [package]
-name = "radix_fmt"
+name = "radix_fmt_ng"
 version = "1.0.0"
-authors = ["Félix <felix-dev@daudre-vignier.fr>"]
+authors = [
+    "Félix <felix-dev@daudre-vignier.fr>",
+    "Krysztal Huang <krysztal.huang@outlook.com>",
+]
 license = "Apache-2.0"
-documentation = "https://docs.rs/radix_fmt/"
-repository = "https://gitlab.com/Boiethios/radix_fmt_rs"
-edition = "2018"
+documentation = "https://docs.rs/radix_fmt_ng/"
+repository = "https://github.com/Krysztal112233/radix_fmt_ng"
+edition = "2021"
 
 description = "Format a number in an arbitrary radix"
 keywords = ["format", "radix", "base", "number", "integer"]

@@ -1,57 +1,4 @@
-//! [![Latest Version](https://img.shields.io/crates/v/radix_fmt.svg)](https://crates.io/crates/radix_fmt)
-//! [![Documentation](https://img.shields.io/badge/api-rustdoc-purple.svg)](https://docs.rs/radix_fmt)
-//!
-//! This crate adds a tool to format a number in an arbitrary base from 2 to 36.
-//!
-//! This is a light crate, without any dependency.
-//!
-//! For primitive signed integers (`i8` to `i128`, and `isize`), negative values are
-//! formatted as the two’s complement representation.
-//!
-//! There is also one specific function for each radix that does not
-//! already exists in the standard library, *e.g.* [`radix_3`](fn.radix_3.html)
-//! to format a number in base 3.
-//!
-//! Get started
-//! -----------
-//!
-//! Add the crate to the cargo manifest:
-//!
-//! ```toml
-//! radix_fmt = "1"
-//! ```
-//!
-//! Import [`radix`](fn.radix.html) in scope,
-//! and you are ready to go:
-//!
-//! ```rust
-//! use radix_fmt::radix;
-//! ```
-//!
-//! Examples
-//! --------
-//!
-//! ```rust
-//! use radix_fmt::*;
-//!
-//! let n = 35;
-//!
-//! // Ouput: "z"
-//! println!("{}", radix(n, 36));
-//! // Same ouput: "z"
-//! println!("{}", radix_36(n));
-//! ```
-//!
-//! You can use the *alternate* modifier to capitalize the letter-digits:
-//!
-//! ```rust
-//! use radix_fmt::radix;
-//!
-//! let n = 35;
-//!
-//! // Ouput: "Z"
-//! println!("{:#}", radix(n, 36));
-//! ```
+#![doc =include_str!("../README.md")]
 
 #[cfg(test)]
 mod tests;
@@ -70,7 +17,7 @@ use std::iter::successors;
 /// # Example:
 ///
 /// ```rust
-/// use radix_fmt::Radix;
+/// use radix_fmt_ng::Radix;
 /// use std::fmt::Write;
 ///
 /// let n = 15;
@@ -92,7 +39,7 @@ where
     /// Create a new displayable number from number and base.
     /// The base must be in the range [2, 36].
     pub fn new(n: T, base: u8) -> Self {
-        assert!(base >= 2 && base <= 36);
+        assert!((2..=36).contains(&base));
 
         Radix { n, base }
     }
@@ -103,8 +50,8 @@ fn digit(u: u8, alternate: bool) -> u8 {
     let a = if alternate { b'A' } else { b'a' };
 
     match u {
-        0...9 => u + b'0',
-        10...35 => u - 10 + a,
+        0..=9 => u + b'0',
+        10..=35 => u - 10 + a,
         _ => unreachable!("Digit is not in range [0..36]"),
     }
 }
@@ -191,7 +138,7 @@ impl_display_for!(NonZeroUsize => usize as usize);
 /// # Example:
 ///
 /// ```rust
-/// use radix_fmt::radix;
+/// use radix_fmt_ng::radix;
 ///
 /// // Similar to println!("{}", Radix::new(123, 10));
 /// // Prints: "123"
